@@ -51,12 +51,12 @@ export default {
             this.$message.error("两次输入的密码不一致")
             return false
           }
-          this.$axios({
+          this.request({
             method: "post", //请求方式
             url: "/user/register",  //请求路径
             params: this.user,
           }).then(res => {
-            var result=res.data
+            var result=res
             if(result.code === '200') {
               this.$message.success("注册成功")
             } else {

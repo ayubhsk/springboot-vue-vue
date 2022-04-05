@@ -1,8 +1,9 @@
 import axios from 'axios'
 import ElementUI from "element-ui"
+import {serverIp} from "../../public/config"
 
 const request = axios.create({
-    baseURL: 'http://localhost:8895',
+    baseURL: `http://${serverIp}:8895`,
     timeout: 5000
 })
 

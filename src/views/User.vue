@@ -27,7 +27,7 @@
             >
                 <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
             </el-popconfirm>
-            <el-upload action="http://localhost:8895/user/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
+            <el-upload :action="'http://'+serverIp+':8895/user/import'" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
                 <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
             </el-upload>
             <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button>
@@ -102,9 +102,12 @@
 </template>
 
 <script>
+    import {serverIp} from "../../public/config";
+
     export default {
         data(){
             return{
+                serverIp:serverIp,
                 tableData: [1],
                 total: 0,
                 pageNum: 1,
@@ -170,12 +173,12 @@
                 this.form = {}
             },
             saveOrUpdate() {
-                this.$axios({
+                this.request({
                     method: "post", //请求方式
                     url: "/user/saveOrUpdate",  //请求路径
                     params: this.form,
                 }).then(result => {
-                    var flag = result.data
+                    var flag = result
                     if (flag) {
                         this.$message.success("保存成功")
                         this.dialogFormVisible = false
@@ -192,14 +195,14 @@
             },
             delUser(id) {
 
-                this.$axios({
+                this.request({
                     method: "post", //请求方式
                     url: "/user/delUser",  //请求路径
                     params: {
                         id: id,
                     },
                 }).then(result => {
-                    var flag = result.data
+                    var flag = result
                     if (flag) {
                         this.$message.success("删除成功")
                         this.loadPage()
@@ -219,14 +222,14 @@
                 }))
                 let ids=this.multipleSelection.map(v=>v.id)
                 console.log(ids)
-                this.$axios({
+                this.request({
                     method: "post", //请求方式
                     url: "/user/batchDelUsers",  //请求路径
                     params: {
                         ids:ids+""
                     },
                 }).then(result => {
-                    var flag = result.data
+                    var flag = result
                     if (flag) {
                         this.$message.success("删除成功")
                         this.loadPage()
@@ -238,8 +241,9 @@
             },
 
             exp() {
-                window.open("http://localhost:8895/user/export")
+                window.open("http://"+this.serverIp+":8895/user/export")
             },
+
             handleExcelImportSuccess() {
                 this.$message.success("导入成功")
                 this.loadPage()

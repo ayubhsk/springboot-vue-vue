@@ -7,6 +7,7 @@ import '@/assets/gloable.css'
 import request from "@/utils/request";
 import axios from "axios";
 import store from '@/store'
+import {serverIp} from "../public/config"
 
 Vue.config.productionTip = false
 
@@ -14,7 +15,7 @@ Vue.use(ElementUI, { size: "mini" });
 
 Vue.prototype.request=request
 
-axios.defaults.baseURL = 'http://localhost:8895'
+axios.defaults.baseURL = `http://${serverIp}:8895`,
 Vue.prototype.$axios=axios
 
 axios.interceptors.request.use(config => {
